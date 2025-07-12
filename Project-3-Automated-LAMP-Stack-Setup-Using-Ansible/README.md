@@ -6,12 +6,13 @@ Automate the installation and configuration of a LAMP stack (Linux, Apache, MySQ
 
 ---
 
-## ✅ Project Structure
+## ⚙️ Technologies Used
 
-Project-4-Automated-LAMP-Stack/
-├── hosts.ini # Inventory file for Ansible
-├── lamp.yml # Ansible playbook
-└── README.md # This documentation
+- 🐧 Linux (Ubuntu EC2 instance)
+- 📦 Apache2
+- 🐬 MySQL
+- 🐘 PHP
+- ⚙️ Ansible
 
 ---
 
