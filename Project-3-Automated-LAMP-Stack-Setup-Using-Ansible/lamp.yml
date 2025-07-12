@@ -1,0 +1,54 @@
+- name: LAMP Stack Setup
+  hosts: web
+  become: yes
+  tasks:
+    - name: Update APT packages
+      apt:
+        update_cache: yes
+
+    - name: Install Apache
+      apt:
+        name: apache2
+        state: present
+
+    - name: Install MySQL (non-interactive)
+      apt:
+        name: mysql-server
+        state: present
+        update_cache: yes
+        force_apt_get: yes
+      environment:
+        DEBIAN_FRONTEND: noninteractive
+
+    - name: Install PHP and modules
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - php
+        - libapache2-mod-php
+        - php-mysql
+
+    - name: Enable PHP in Apache
+      command: a2enmod php8.1
+      notify: Restart Apache
+
+    - name: Start Apache and MySQL
+      service:
+        name: "{{ item }}"
+        state: started
+        enabled: yes
+      loop:
+        - apache2
+        - mysql
+
+    - name: Deploy Sample PHP File
+      copy:
+        dest: /var/www/html/index.php
+        content: "<?php phpinfo(); ?>"
+
+  handlers:
+    - name: Restart Apache
+      service:
+        name: apache2
+        state: restarted
